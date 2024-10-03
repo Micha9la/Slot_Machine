@@ -10,7 +10,7 @@
             {
                 for (int columnIndex = 0; columnIndex < 3; columnIndex++)
                 { 
-                    Console.Write(grid[lineIndex, columnIndex] );
+                    Console.Write(grid[lineIndex, columnIndex] ); 
                 }
             }
 
