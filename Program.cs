@@ -17,7 +17,7 @@ namespace Slot_Machine
                 "and write only the coresponding symbol in capital letters: " +
                 "A for central line, B for all horizontal lines, C for all vertikal lines, D for all diagonal lines");
             string gameMode = Console.ReadLine();
-            Console.WriteLine("You have picked your prefered option and you wager. Below you see the result...");
+            string gameModeInsensitive = gameMode.ToUpper();
 
             int[,] grid = new int[3, 3];
 
@@ -31,32 +31,28 @@ namespace Slot_Machine
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("end of loop");
+            Console.WriteLine("Above you see the grid");
+
+            int rows = grid.GetLength(0);
+            int columns = grid.GetLength(1);
+            if (gameModeInsensitive == "A")
+            {
+                int modeA = rows/2;
+                int firstElement = grid[modeA, 0];
+                int secondElement = grid[modeA, 1];
+                int thirdElement = grid[modeA, 2];
+
+                if (firstElement == secondElement && secondElement == thirdElement)
+                {
+                    Console.WriteLine("You won " + wager);
+                }
+                else
+                {
+                    Console.WriteLine("You lost");
+                }
+
+            }
             
-            if (gameMode == "A")
-            {
-                ;
-                ;
-                ;
-            }
-            if (gameMode == "B")
-            {
-                ;
-                ;
-                ;
-            }
-            if (gameMode == "C")
-            {
-                ;
-                ;
-                ;
-            }
-            if (gameMode == "D")
-            {
-                ;
-                ;
-                ;
-            }
             else
             {
                 Console.WriteLine("Invalid input. Please try again");
