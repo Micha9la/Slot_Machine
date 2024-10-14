@@ -9,6 +9,14 @@ namespace Slot_Machine
         {
             const int UPPER_NUMBER_RANGE = 4;
             const int LOWER_NUMBER_RANGE = 1;
+            const int GRID_SIZE_ROW = 3;
+            const int GRID_SIZE_COLUMN = 3;
+            const string GAME_MODE_CENTRAL_LINE = "A";
+            const string GAME_MODE_HORIZONTAL_LINES = "B";
+            const string GAME_MODE_VERTICAL_LINES = "C";
+            const string GAME_MODE_DIAGONAL_LINES = "D";
+            const int GRID_DIVISOR = 2;
+
             Random random = new Random();
             Console.WriteLine("Welcome to the slot machine.");
             Console.WriteLine("How much would you like to wage? Please enter only a number");
@@ -19,11 +27,11 @@ namespace Slot_Machine
             string gameMode = Console.ReadLine();
             string gameModeInsensitive = gameMode.ToUpper();
 
-            int[,] grid = new int[3, 3];
+            int[,] grid = new int[GRID_SIZE_ROW, GRID_SIZE_COLUMN];
 
-            for (int lineIndex = 0; lineIndex < 3; lineIndex++)
+            for (int lineIndex = 0; lineIndex < GRID_SIZE_ROW; lineIndex++)
             {
-                for (int columnIndex = 0; columnIndex < 3; columnIndex++)
+                for (int columnIndex = 0; columnIndex < GRID_SIZE_COLUMN; columnIndex++)
                 {
                     int randomNumber = random.Next(LOWER_NUMBER_RANGE, UPPER_NUMBER_RANGE);
                     grid[lineIndex, columnIndex] = randomNumber;
@@ -34,10 +42,26 @@ namespace Slot_Machine
             Console.WriteLine("Above you see the grid");
 
             int rows = grid.GetLength(0);
+            int middleRowIndex = rows / 2;
+            int firstElementMiddleRow = grid[middleRowIndex, 0];
             int columns = grid.GetLength(1);
-            if (gameModeInsensitive == "A")
+            if (gameModeInsensitive == GAME_MODE_CENTRAL_LINE)
             {
-                int modeA = rows/2;
+                for (int col = 0; col < columns; col++) 
+                {
+   
+                    if (grid[middleRowIndex, col] != firstElementMiddleRow)
+                    {
+                        Console.WriteLine("You lost " + wager + " Euro");
+                        return;
+                    }                  
+                }
+            }
+            Console.WriteLine("You won " + wager + " Euro");
+
+            if (gameModeInsensitive == GAME_MODE_HORIZONTAL_LINES)
+            {
+                int modeA = rows;
                 int firstElement = grid[modeA, 0];
                 int secondElement = grid[modeA, 1];
                 int thirdElement = grid[modeA, 2];
@@ -48,12 +72,10 @@ namespace Slot_Machine
                 }
                 else
                 {
-                    Console.WriteLine("You lost");
+                    Console.WriteLine("You lost " + wager);
                 }
-
             }
-            
-            else
+            if (gameModeInsensitive != GAME_MODE_CENTRAL_LINE && gameModeInsensitive != GAME_MODE_HORIZONTAL_LINES && gameModeInsensitive != GAME_MODE_VERTICAL_LINES && gameModeInsensitive != GAME_MODE_DIAGONAL_LINES)
             {
                 Console.WriteLine("Invalid input. Please try again");
             }
