@@ -42,7 +42,7 @@ namespace Slot_Machine
             Console.WriteLine("Above you see the grid");
 
             int rows = grid.GetLength(0);
-            int middleRowIndex = rows / 2;
+            int middleRowIndex = rows / GRID_DIVISOR;
             int firstElementMiddleRow = grid[middleRowIndex, 0];
             int columns = grid.GetLength(1);
             if (gameModeInsensitive == GAME_MODE_CENTRAL_LINE)
