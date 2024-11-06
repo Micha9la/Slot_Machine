@@ -44,41 +44,46 @@ namespace Slot_Machine
             int rows = grid.GetLength(0);
             int middleRowIndex = rows / GRID_DIVISOR;
             int firstElementMiddleRow = grid[middleRowIndex, 0];
+
             int columns = grid.GetLength(1);
+
             if (gameModeInsensitive == GAME_MODE_CENTRAL_LINE)
             {
-                for (int col = 0; col < columns; col++) 
+                for (int col = 0; col < columns; col++)
                 {
-   
                     if (grid[middleRowIndex, col] != firstElementMiddleRow)
                     {
                         Console.WriteLine("You lost " + wager + " Euro");
                         return;
-                    }                  
+                    }
                 }
+                Console.WriteLine("You won " + wager + " Euro");
             }
-            Console.WriteLine("You won " + wager + " Euro");
 
+            bool won = false;
             if (gameModeInsensitive == GAME_MODE_HORIZONTAL_LINES)
             {
-                int modeA = rows;
-                int firstElement = grid[modeA, 0];
-                int secondElement = grid[modeA, 1];
-                int thirdElement = grid[modeA, 2];
+                for (int row = 0; row < rows; row++)
+                {
+                    for (int col = 0; col <= columns - GRID_SIZE_COLUMN; col++)
+                    {
+                        if (grid[row, col] == grid[row, col + 1] && grid[row, col] == grid[row, col + 2])
+                        {
+                            Console.WriteLine("You won " + wager + " Euro");
+                            won = true;
+                            break;
+                        }
+                    }
+                    if (won) break;
+                }
 
-                if (firstElement == secondElement && secondElement == thirdElement)
+                if (!won)
                 {
-                    Console.WriteLine("You won " + wager);
-                }
-                else
-                {
-                    Console.WriteLine("You lost " + wager);
+                    Console.WriteLine("You lost");
                 }
             }
-            if (gameModeInsensitive != GAME_MODE_CENTRAL_LINE && gameModeInsensitive != GAME_MODE_HORIZONTAL_LINES && gameModeInsensitive != GAME_MODE_VERTICAL_LINES && gameModeInsensitive != GAME_MODE_DIAGONAL_LINES)
-            {
-                Console.WriteLine("Invalid input. Please try again");
-            }
+
+
         }
     }
 }
