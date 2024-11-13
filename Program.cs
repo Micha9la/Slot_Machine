@@ -87,7 +87,10 @@ namespace Slot_Machine
                 {
                     Console.WriteLine("You won " + wager /GRID_SIZE_ROW * numOfWins + " Euro, because 2 rows are the same");
                 }
-                
+                if (numOfWins == 3)
+                {
+                    Console.WriteLine("You won " + wager + " Euro, because one row is the same.");
+                }
                 if (!won)
                 {
                     Console.WriteLine("You lost, because none of the rows are the same.");
