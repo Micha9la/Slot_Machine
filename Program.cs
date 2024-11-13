@@ -61,6 +61,7 @@ namespace Slot_Machine
             }
 
             bool won = false;
+            int numOfWins = 0;
             if (gameModeInsensitive == GAME_MODE_HORIZONTAL_LINES)
             {
                 for (int row = 0; row < rows; row++)
@@ -69,17 +70,27 @@ namespace Slot_Machine
                     {
                         if (grid[row, col] == grid[row, col + 1] && grid[row, col] == grid[row, col + 2])
                         {
-                            Console.WriteLine("You won " + wager + " Euro");
                             won = true;
+                            numOfWins++;
                             break;
                         }
                     }
                     if (won) break;
-                }
 
+                }
+                
+                if (numOfWins == 1)
+                {
+                    Console.WriteLine("You won " + wager / GRID_SIZE_ROW + " Euro, because one row is the same.");
+                }
+                if (numOfWins == 2)
+                {
+                    Console.WriteLine("You won " + wager /GRID_SIZE_ROW * numOfWins + " Euro, because 2 rows are the same");
+                }
+                
                 if (!won)
                 {
-                    Console.WriteLine("You lost");
+                    Console.WriteLine("You lost, because none of the rows are the same.");
                 }
             }
 
