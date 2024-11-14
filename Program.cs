@@ -41,17 +41,17 @@ namespace Slot_Machine
             }
             Console.WriteLine("Above you see the grid");
 
-            int rows = grid.GetLength(0);
-            int middleRowIndex = rows / GRID_DIVISOR;
+            int rowLength = grid.GetLength(0);
+            int middleRowIndex = rowLength / GRID_DIVISOR;
             int firstElementMiddleRow = grid[middleRowIndex, 0];
 
-            int columns = grid.GetLength(1);
+            int columnLength = grid.GetLength(1);
 
             if (gameModeInsensitive == GAME_MODE_CENTRAL_LINE)
             {
-                for (int col = 0; col < columns; col++)
+                for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
                 {
-                    if (grid[middleRowIndex, col] != firstElementMiddleRow)
+                    if (grid[middleRowIndex, columnIndex] != firstElementMiddleRow)
                     {
                         Console.WriteLine("You lost " + wager + " Euro");
                         return;
@@ -64,16 +64,16 @@ namespace Slot_Machine
             int numOfWins = 0;
             if (gameModeInsensitive == GAME_MODE_HORIZONTAL_LINES)
             {
-                for (int row = 0; row < rows; row++)
+                for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
                 {
                     bool win = true;
-                    int firstElementOfEachRow = grid[row, 0];
-                    for (int col = 0; col < columns; col++)
+                    int firstElementOfEachRow = grid[lineIndex, 0];
+                    for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
                     {
-                        if (grid[row, col] != firstElementOfEachRow)
+                        if (grid[lineIndex, columnIndex] != firstElementOfEachRow)
                         {
                             win = false;
-                            break;// Move to the next row after finding a win
+                            break;// Move to the next lineIndex after finding a win
                         }
                     }
                     if (win)
@@ -83,23 +83,23 @@ namespace Slot_Machine
                 }
                 if (numOfWins > 0)
                 {
-                    Console.WriteLine("You won " + (wager / GRID_SIZE_ROW) * numOfWins + " Euro");
+                    Console.WriteLine("You won " + (wager / GRID_SIZE_ROW) * numOfWins + " Euro, because " + numOfWins + " lineIndex(s) is/are the same");
                 }
                 if (numOfWins == 0)
                 {
-                    Console.WriteLine("You lost. No row is the same");
+                    Console.WriteLine("You lost. No line is the same");
                 }                
             }
 
             if (gameModeInsensitive == GAME_MODE_VERTICAL_LINES)
             {
-                for (int col = 0; col < columns; col++) 
+                for (int columnIndex = 0; columnIndex < columnLength; columnIndex++) 
                 {
                     bool win = true;
-                    int firstElementOfEachColumn = grid[0, col];
-                    for (int row = 0; row < rows; row++)
+                    int firstElementOfEachColumn = grid[0, columnIndex];
+                    for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
                     {
-                        if (grid[row, col] != firstElementOfEachColumn)
+                        if (grid[lineIndex, columnIndex] != firstElementOfEachColumn)
                         {
                             win = false;
                             break;// Move to the next column after finding a win
@@ -112,7 +112,7 @@ namespace Slot_Machine
                 }
                 if (numOfWins > 0)
                 {
-                    Console.WriteLine("You won " + (wager / GRID_SIZE_COLUMN) * numOfWins + " Euro");
+                    Console.WriteLine("You won " + (wager / GRID_SIZE_COLUMN) * numOfWins + " Euro, because " + numOfWins + " column(s) is/are the same.");
                 }
                 if (numOfWins == 0)
                 {
