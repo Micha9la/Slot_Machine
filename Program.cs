@@ -9,8 +9,8 @@ namespace Slot_Machine
         {
             const int UPPER_NUMBER_RANGE = 4;
             const int LOWER_NUMBER_RANGE = 1;
-            const int GRID_SIZE_ROW = 5;
-            const int GRID_SIZE_COLUMN = 5;
+            const int GRID_SIZE_ROW = 3;
+            const int GRID_SIZE_COLUMN = 3;
             const string GAME_MODE_CENTRAL_LINE = "A";
             const string GAME_MODE_HORIZONTAL_LINES = "B";
             const string GAME_MODE_VERTICAL_LINES = "C";
@@ -88,9 +88,36 @@ namespace Slot_Machine
                 if (numOfWins == 0)
                 {
                     Console.WriteLine("You lost. No row is the same");
-                }
-                //numOfWins++;
+                }                
+            }
 
+            if (gameModeInsensitive == GAME_MODE_VERTICAL_LINES)
+            {
+                for (int col = 0; col < columns; col++) 
+                {
+                    bool win = true;
+                    int firstElementOfEachColumn = grid[0, col];
+                    for (int row = 0; row < rows; row++)
+                    {
+                        if (grid[row, col] != firstElementOfEachColumn)
+                        {
+                            win = false;
+                            break;// Move to the next column after finding a win
+                        }
+                    }
+                    if (win)
+                    {
+                        numOfWins++;
+                    }
+                }
+                if (numOfWins > 0)
+                {
+                    Console.WriteLine("You won " + (wager / GRID_SIZE_COLUMN) * numOfWins + " Euro");
+                }
+                if (numOfWins == 0)
+                {
+                    Console.WriteLine("You lost. No column is the same");
+                }
             }
 
 
