@@ -9,8 +9,8 @@ namespace Slot_Machine
         {
             const int UPPER_NUMBER_RANGE = 4;
             const int LOWER_NUMBER_RANGE = 1;
-            const int GRID_SIZE_ROW = 3;
-            const int GRID_SIZE_COLUMN = 3;
+            const int GRID_SIZE_ROW = 5;
+            const int GRID_SIZE_COLUMN = 5;
             const string GAME_MODE_CENTRAL_LINE = "A";
             const string GAME_MODE_HORIZONTAL_LINES = "B";
             const string GAME_MODE_VERTICAL_LINES = "C";
@@ -60,41 +60,37 @@ namespace Slot_Machine
                 Console.WriteLine("You won " + wager + " Euro");
             }
 
-            bool won = false;
+
             int numOfWins = 0;
             if (gameModeInsensitive == GAME_MODE_HORIZONTAL_LINES)
             {
                 for (int row = 0; row < rows; row++)
                 {
-                    for (int col = 0; col <= columns - GRID_SIZE_COLUMN; col++)
+                    bool win = true;
+                    int firstElementOfEachRow = grid[row, 0];
+                    for (int col = 0; col < columns; col++)
                     {
-                        if (grid[row, col] == grid[row, col + 1] && grid[row, col] == grid[row, col + 2])
+                        if (grid[row, col] != firstElementOfEachRow)
                         {
-                            won = true;
-                            numOfWins++;
-                            break;
+                            win = false;
+                            break;// Move to the next row after finding a win
                         }
                     }
-                    if (won) break;
+                    if (win)
+                    {
+                        numOfWins++;
+                    }
+                }
+                if (numOfWins > 0)
+                {
+                    Console.WriteLine("You won " + (wager / GRID_SIZE_ROW) * numOfWins + " Euro");
+                }
+                if (numOfWins == 0)
+                {
+                    Console.WriteLine("You lost. No row is the same");
+                }
+                //numOfWins++;
 
-                }
-                
-                if (numOfWins == 1)
-                {
-                    Console.WriteLine("You won " + wager / GRID_SIZE_ROW + " Euro, because one row is the same.");
-                }
-                if (numOfWins == 2)
-                {
-                    Console.WriteLine("You won " + wager /GRID_SIZE_ROW * numOfWins + " Euro, because 2 rows are the same");
-                }
-                if (numOfWins == 3)
-                {
-                    Console.WriteLine("You won " + wager + " Euro, because one row is the same.");
-                }
-                if (!won)
-                {
-                    Console.WriteLine("You lost, because none of the rows are the same.");
-                }
             }
 
 
