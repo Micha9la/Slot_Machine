@@ -87,13 +87,13 @@ namespace Slot_Machine
                 }
                 if (numOfWins == 0)
                 {
-                    Console.WriteLine("You lost. No line is the same");
-                }                
+                    Console.WriteLine("You lost. No row is the same");
+                }
             }
 
             if (gameModeInsensitive == GAME_MODE_VERTICAL_LINES)
             {
-                for (int columnIndex = 0; columnIndex < columnLength; columnIndex++) 
+                for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
                 {
                     bool win = true;
                     int firstElementOfEachColumn = grid[0, columnIndex];
@@ -120,7 +120,64 @@ namespace Slot_Machine
                 }
             }
 
+            if (gameModeInsensitive == GAME_MODE_DIAGONAL_LINES)
+            {
+                for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
+                {
+                    bool win = true;
+                    int firstElementRightToLeft = grid[lineIndex, GRID_SIZE_COLUMN - 1 - lineIndex];
+                    
+                    for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
+                    {
+                        if (grid[lineIndex, columnIndex] != firstElementRightToLeft)
+                        {
+                            win = false;
+                            break;// Move to the next column after finding a win
+                        }
+                    }
+                    if (win)
+                    {
+                        numOfWins++;
+                    }
+                }
+                if (numOfWins > 0)
+                {
+                    Console.WriteLine("You won. You have a diagonal win from right to left.");
+                }
+                if (numOfWins == 0)
+                {
+                    Console.WriteLine("You lost. No diagonal is the same.");
+                }
+                int numOfWinsDiagonalLeftToRight = 0;
+                for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
+                {
+                    bool win = true;                    
+                    for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
+                    {
+                        int firstElementLeftToRight = grid[lineIndex, columnIndex];
+                        if (grid[lineIndex, columnIndex] != firstElementLeftToRight)
+                        {
+                            win = false;
+                            break;// Move to the next column after finding a win
+                        }
+                    }
+                    if (win)
+                    {
+                        numOfWinsDiagonalLeftToRight++;
+                    }
+                }
+                if (numOfWinsDiagonalLeftToRight > 0)
+                {
+                    Console.WriteLine("You won. You have a diagonal win from left to right.");
+                }
+                if (numOfWinsDiagonalLeftToRight == 0)
+                {
+                    Console.WriteLine("You lost. No diagonal is the same.");
+                }
+            }
 
         }
+
+
     }
 }
