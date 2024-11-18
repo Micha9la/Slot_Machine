@@ -19,9 +19,9 @@ namespace Slot_Machine
 
             Random random = new Random();
             Console.WriteLine("Welcome to the slot machine.");
-            Console.WriteLine("How much would you like to wage? Please enter only a number");
+            Console.WriteLine("How much would you like to wage? Please enter only a number and then ENTER");
             int wager = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Please choose ONLY ONE of the following game mode options " +
+            Console.WriteLine("Please choose ONLY ONE of the following game mode options and ENTER " +
                 "and write only the coresponding symbol in capital letters: " +
                 "A for central line, B for all horizontal lines, C for all vertikal lines, D for all diagonal lines");
             string gameMode = Console.ReadLine();
@@ -120,25 +120,22 @@ namespace Slot_Machine
                 }
             }
 
+            int firstElementLeftToRight = grid[0, 0];
+            int firstElementRightToLeft = grid[0, GRID_SIZE_COLUMN - 1];
             if (gameModeInsensitive == GAME_MODE_DIAGONAL_LINES)
             {
+                bool win = true;
                 for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
                 {
-                    bool win = true;
-                    int firstElementRightToLeft = grid[lineIndex, GRID_SIZE_COLUMN - 1 - lineIndex];
-                    
-                    for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
+                    if (grid[lineIndex, GRID_SIZE_COLUMN - 1 - lineIndex] != firstElementRightToLeft)
                     {
-                        if (grid[lineIndex, columnIndex] != firstElementRightToLeft)
-                        {
-                            win = false;
-                            break;// Move to the next column after finding a win
-                        }
+                        win = false;
+                        break;// Move to the next column after finding a win
                     }
-                    if (win)
-                    {
-                        numOfWins++;
-                    }
+                }
+                if (win)
+                {
+                    numOfWins++;
                 }
                 if (numOfWins > 0)
                 {
@@ -146,25 +143,30 @@ namespace Slot_Machine
                 }
                 if (numOfWins == 0)
                 {
-                    Console.WriteLine("You lost. No diagonal is the same.");
+                    Console.WriteLine("You lost. There is no win from right to left.");
                 }
+
                 int numOfWinsDiagonalLeftToRight = 0;
+                bool winLeftToRight = true;
                 for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
                 {
-                    bool win = true;                    
-                    for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
-                    {
-                        int firstElementLeftToRight = grid[lineIndex, columnIndex];
-                        if (grid[lineIndex, columnIndex] != firstElementLeftToRight)
+                    Console.WriteLine($"Comparing grid[{lineIndex}, {lineIndex}] = {grid[lineIndex, lineIndex]} with firstElementLeftToRight = {firstElementLeftToRight}");
+                        if (grid[lineIndex, lineIndex] != firstElementLeftToRight)
                         {
-                            win = false;
-                            break;// Move to the next column after finding a win
+                            winLeftToRight = false;
+                            break;
                         }
-                    }
-                    if (win)
+                    
+                    if (grid[lineIndex, lineIndex] != firstElementLeftToRight)
                     {
-                        numOfWinsDiagonalLeftToRight++;
+                        winLeftToRight = false;
+                        break;// Move to the next column after finding a win
+
                     }
+                }
+                if (winLeftToRight)
+                {
+                    numOfWinsDiagonalLeftToRight++;
                 }
                 if (numOfWinsDiagonalLeftToRight > 0)
                 {
@@ -172,7 +174,7 @@ namespace Slot_Machine
                 }
                 if (numOfWinsDiagonalLeftToRight == 0)
                 {
-                    Console.WriteLine("You lost. No diagonal is the same.");
+                    Console.WriteLine("You lost. There is no win from left to right.");
                 }
             }
 
