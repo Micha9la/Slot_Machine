@@ -19,11 +19,25 @@ namespace Slot_Machine
 
             Random random = new Random();
             Console.WriteLine("Welcome to the slot machine.");
+            Console.WriteLine("How much money would you like to put into your gaming wallet? Please put in only numbers and press ENTER.");
+            //read the input as a string, because user input from the console is typically received as a string.
+            //Then, TryParse to validate and convert that string to a number.
+            //To handle cases where the user might enter non-numeric characters,
+            string wallet = Console.ReadLine();
+            int result;
+            bool validInput = int.TryParse(wallet, out result);
+
+            if (validInput ) {Console.WriteLine("Your wallet contains " + wallet + "Euro."); }
+            else {Console.WriteLine("Invalid input. Please enter a valid number."); }
+
             Console.WriteLine("How much would you like to wage? Please enter only a number and then ENTER");
             int wager = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Please choose ONLY ONE of the following game mode options and ENTER " +
-                "and write only the coresponding symbol in capital letters: " +
-                "A for central line, B for all horizontal lines, C for all vertikal lines, D for all diagonal lines");
+                "and write only the coresponding symbol in capital letters: " 
+                + GAME_MODE_CENTRAL_LINE + ", for central line. " 
+                + GAME_MODE_HORIZONTAL_LINES + ", for all horizontal lines. " 
+                + GAME_MODE_VERTICAL_LINES + ", for all vertical lines. " 
+                + GAME_MODE_DIAGONAL_LINES + ", for both diagonal lines. ");
             string gameMode = Console.ReadLine();
             string gameModeInsensitive = gameMode.ToUpper();
 
