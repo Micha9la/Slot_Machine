@@ -24,23 +24,42 @@ namespace Slot_Machine
             //Then, TryParse to validate and convert that string to a number.
             //To handle cases where the user might enter non-numeric characters,
             string wallet = Console.ReadLine();
-            int result;
-            bool validInput = int.TryParse(wallet, out result);
+            int walletValidated;
+            bool walletValidInput = int.TryParse(wallet, out walletValidated);
 
-            if (validInput ) {Console.WriteLine("Your wallet contains " + wallet + "Euro."); }
-            else {Console.WriteLine("Invalid input. Please enter a valid number."); }
+            if (walletValidInput) { Console.WriteLine("Your wallet contains " + wallet + "Euro."); }
+            else { Console.WriteLine("Invalid input. Please enter a valid number."); }
 
             Console.WriteLine("How much would you like to wage? Please enter only a number and then ENTER");
-            int wager = Convert.ToInt32(Console.ReadLine());
+            string wager = Console.ReadLine();
+            int wagerValidated;
+            bool wagerValidInput = int.TryParse(wager, out wagerValidated);
+
+            if (wagerValidInput) { Console.WriteLine("Your wager is " + wager + "Euro."); }
+            else { Console.WriteLine("Invalid input. Please enter a valid number."); }
+
             Console.WriteLine("Please choose ONLY ONE of the following game mode options and ENTER " +
-                "and write only the coresponding symbol in capital letters: " 
-                + GAME_MODE_CENTRAL_LINE + ", for central line. " 
-                + GAME_MODE_HORIZONTAL_LINES + ", for all horizontal lines. " 
-                + GAME_MODE_VERTICAL_LINES + ", for all vertical lines. " 
+                "and write only the coresponding symbol in capital letters: "
+                + GAME_MODE_CENTRAL_LINE + ", for central line. "
+                + GAME_MODE_HORIZONTAL_LINES + ", for all horizontal lines. "
+                + GAME_MODE_VERTICAL_LINES + ", for all vertical lines. "
                 + GAME_MODE_DIAGONAL_LINES + ", for both diagonal lines. ");
             string gameMode = Console.ReadLine();
             string gameModeInsensitive = gameMode.ToUpper();
 
+            //while (input is not "A" and input is not "B" and input is not "C" and input is not "D")
+            while (gameModeInsensitive != GAME_MODE_CENTRAL_LINE && gameModeInsensitive != GAME_MODE_HORIZONTAL_LINES && gameModeInsensitive != GAME_MODE_VERTICAL_LINES && gameModeInsensitive != GAME_MODE_DIAGONAL_LINES)
+            {
+                Console.WriteLine("Please choose ONLY ONE of the following game mode options and ENTER " +
+                "and write only the coresponding symbol in capital letters: "
+                + GAME_MODE_CENTRAL_LINE + ", for central line. "
+                + GAME_MODE_HORIZONTAL_LINES + ", for all horizontal lines. "
+                + GAME_MODE_VERTICAL_LINES + ", for all vertical lines. "
+                + GAME_MODE_DIAGONAL_LINES + ", for both diagonal lines. ");
+                gameMode = Console.ReadLine();
+                gameModeInsensitive = gameMode.ToUpper();
+                
+            }
             int[,] grid = new int[GRID_SIZE_ROW, GRID_SIZE_COLUMN];
 
             for (int lineIndex = 0; lineIndex < GRID_SIZE_ROW; lineIndex++)
@@ -97,7 +116,7 @@ namespace Slot_Machine
                 }
                 if (numOfWins > 0)
                 {
-                    Console.WriteLine("You won " + (wager / GRID_SIZE_ROW) * numOfWins + " Euro, because " + numOfWins + " lineIndex(s) is/are the same");
+                    Console.WriteLine("You won " + (wagerValidated / GRID_SIZE_ROW) * numOfWins + " Euro, because " + numOfWins + " lineIndex(s) is/are the same");
                 }
                 if (numOfWins == 0)
                 {
@@ -126,7 +145,7 @@ namespace Slot_Machine
                 }
                 if (numOfWins > 0)
                 {
-                    Console.WriteLine("You won " + (wager / GRID_SIZE_COLUMN) * numOfWins + " Euro, because " + numOfWins + " column(s) is/are the same.");
+                    Console.WriteLine("You won " + (wagerValidated / GRID_SIZE_COLUMN) * numOfWins + " Euro, because " + numOfWins + " column(s) is/are the same.");
                 }
                 if (numOfWins == 0)
                 {
@@ -165,12 +184,12 @@ namespace Slot_Machine
                 for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
                 {
                     Console.WriteLine($"Comparing grid[{lineIndex}, {lineIndex}] = {grid[lineIndex, lineIndex]} with firstElementLeftToRight = {firstElementLeftToRight}");
-                        if (grid[lineIndex, lineIndex] != firstElementLeftToRight)
-                        {
-                            winLeftToRight = false;
-                            break;
-                        }
-                    
+                    if (grid[lineIndex, lineIndex] != firstElementLeftToRight)
+                    {
+                        winLeftToRight = false;
+                        break;
+                    }
+
                     if (grid[lineIndex, lineIndex] != firstElementLeftToRight)
                     {
                         winLeftToRight = false;
