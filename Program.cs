@@ -7,7 +7,7 @@ namespace Slot_Machine
     {
         static void Main(string[] args)
         {
-            const int UPPER_NUMBER_RANGE = 4;
+            const int UPPER_NUMBER_RANGE = 3;
             const int LOWER_NUMBER_RANGE = 1;
             const int GRID_SIZE_ROW = 3;
             const int GRID_SIZE_COLUMN = 3;
@@ -119,11 +119,15 @@ namespace Slot_Machine
                 if (numOfWins > 0)
                 {
                     Console.WriteLine("You won " + (wagerValidated / GRID_SIZE_ROW) * numOfWins + " Euro, because " + numOfWins + " lineIndex(s) is/are the same");
+                    int moneyWon = wagerValidated / GRID_SIZE_ROW * numOfWins;
+                    walletValidated += moneyWon;
                 }
                 if (numOfWins == 0)
                 {
                     Console.WriteLine("You lost. No row is the same");
+                    walletValidated -= wagerValidated;
                 }
+                Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
             }
 
             if (gameModeInsensitive == GAME_MODE_VERTICAL_LINES)
@@ -148,11 +152,15 @@ namespace Slot_Machine
                 if (numOfWins > 0)
                 {
                     Console.WriteLine("You won " + (wagerValidated / GRID_SIZE_COLUMN) * numOfWins + " Euro, because " + numOfWins + " column(s) is/are the same.");
+                    int moneyWon = wagerValidated / GRID_SIZE_ROW * numOfWins;
+                    walletValidated += moneyWon;
                 }
                 if (numOfWins == 0)
                 {
                     Console.WriteLine("You lost. No column is the same");
+                    walletValidated -= wagerValidated;
                 }
+                Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
             }
 
             int firstElementLeftToRight = grid[0, 0];
@@ -172,13 +180,17 @@ namespace Slot_Machine
                 {
                     numOfWins++;
                 }
+                int moneyWon = 0;
                 if (numOfWins > 0)
                 {
                     Console.WriteLine("You won. You have a diagonal win from right to left.");
+                    moneyWon = wagerValidated / GRID_SIZE_ROW * numOfWins;
+                    walletValidated += moneyWon;
                 }
                 if (numOfWins == 0)
                 {
                     Console.WriteLine("You lost. There is no win from right to left.");
+                    walletValidated -= moneyWon;
                 }
 
                 int numOfWinsDiagonalLeftToRight = 0;
@@ -206,11 +218,15 @@ namespace Slot_Machine
                 if (numOfWinsDiagonalLeftToRight > 0)
                 {
                     Console.WriteLine("You won. You have a diagonal win from left to right.");
+                    moneyWon = wagerValidated / GRID_SIZE_ROW * numOfWins;
+                    walletValidated += moneyWon;
                 }
                 if (numOfWinsDiagonalLeftToRight == 0)
                 {
                     Console.WriteLine("You lost. There is no win from left to right.");
+                    walletValidated -= moneyWon;
                 }
+                Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
             }
 
         }
