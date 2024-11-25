@@ -47,7 +47,6 @@ namespace Slot_Machine
             string gameMode = Console.ReadLine();
             string gameModeInsensitive = gameMode.ToUpper();
 
-            //while (input is not "A" and input is not "B" and input is not "C" and input is not "D")
             while (gameModeInsensitive != GAME_MODE_CENTRAL_LINE && gameModeInsensitive != GAME_MODE_HORIZONTAL_LINES && gameModeInsensitive != GAME_MODE_VERTICAL_LINES && gameModeInsensitive != GAME_MODE_DIAGONAL_LINES)
             {
                 Console.WriteLine("Please choose ONLY ONE of the following game mode options and ENTER " +
@@ -58,7 +57,7 @@ namespace Slot_Machine
                 + GAME_MODE_DIAGONAL_LINES + ", for both diagonal lines. ");
                 gameMode = Console.ReadLine();
                 gameModeInsensitive = gameMode.ToUpper();
-                
+
             }
             int[,] grid = new int[GRID_SIZE_ROW, GRID_SIZE_COLUMN];
 
@@ -87,10 +86,13 @@ namespace Slot_Machine
                     if (grid[middleRowIndex, columnIndex] != firstElementMiddleRow)
                     {
                         Console.WriteLine("You lost " + wager + " Euro");
+                        walletValidated -= wagerValidated;
                         return;
                     }
                 }
                 Console.WriteLine("You won " + wager + " Euro");
+                walletValidated += wagerValidated;
+                Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
             }
 
 
