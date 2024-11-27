@@ -7,7 +7,7 @@ namespace Slot_Machine
     {
         static void Main(string[] args)
         {
-            const int UPPER_NUMBER_RANGE = 3;
+            const int UPPER_NUMBER_RANGE = 2;
             const int LOWER_NUMBER_RANGE = 1;
             const int GRID_SIZE_ROW = 3;
             const int GRID_SIZE_COLUMN = 3;
@@ -74,11 +74,10 @@ namespace Slot_Machine
             Console.WriteLine("Above you see the grid");
 
             int rowLength = grid.GetLength(0);
-            int middleRowIndex = rowLength / GRID_DIVISOR;
-            int firstElementMiddleRow = grid[middleRowIndex, 0];
-
             int columnLength = grid.GetLength(1);
 
+            int middleRowIndex = rowLength / GRID_DIVISOR;
+            int firstElementMiddleRow = grid[middleRowIndex, 0];            
             if (gameModeInsensitive == GAME_MODE_CENTRAL_LINE)
             {
                 for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
@@ -108,7 +107,7 @@ namespace Slot_Machine
                         if (grid[lineIndex, columnIndex] != firstElementOfEachRow)
                         {
                             win = false;
-                            break;// Move to the next lineIndex after finding a win
+                            break;// Move to the next lineIndex after finding a winDiagonal
                         }
                     }
                     if (win)
@@ -141,7 +140,7 @@ namespace Slot_Machine
                         if (grid[lineIndex, columnIndex] != firstElementOfEachColumn)
                         {
                             win = false;
-                            break;// Move to the next column after finding a win
+                            break;// Move to the next column after finding a winDiagonal
                         }
                     }
                     if (win)
@@ -163,63 +162,57 @@ namespace Slot_Machine
                 Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
             }
 
+            int numOfWinsDiagonal = 0;
             int firstElementLeftToRight = grid[0, 0];
             int firstElementRightToLeft = grid[0, GRID_SIZE_COLUMN - 1];
             if (gameModeInsensitive == GAME_MODE_DIAGONAL_LINES)
             {
-                bool win = true;
+                bool winDiagonal = true;
                 for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
                 {
                     if (grid[lineIndex, GRID_SIZE_COLUMN - 1 - lineIndex] != firstElementRightToLeft)
                     {
-                        win = false;
-                        break;// Move to the next column after finding a win
+                        winDiagonal = false;
+                        break;// Move to the next column after finding a winDiagonal
                     }
                 }
-                int moneyWonRightToLeft = wagerValidated / 2;
-                int walletUpdated = 0;
-                if (win)
+                if (winDiagonal)
                 {
-                    Console.WriteLine("You have a diagonal win from right to left.");
-                    walletUpdated = walletValidated += moneyWonRightToLeft;
+                    numOfWinsDiagonal++;
                 }
-                
-                else
-                {
-                    Console.WriteLine("There is no win from right to left.");
-                    walletUpdated = walletValidated -= moneyWonRightToLeft;
-                }
-                //Console.WriteLine("Your wallet has now " + walletUpdated + " Euro in it.");
-
-                bool winLeftToRight = true;
+              
                 for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
                 {
                     if (grid[lineIndex, lineIndex] != firstElementLeftToRight)
                     {
-                        winLeftToRight = false;
+                        winDiagonal = false;
                         break;
                     }
 
                     if (grid[lineIndex, lineIndex] != firstElementLeftToRight)
                     {
-                        winLeftToRight = false;
-                        break;// Move to the next column after finding a win
+                        winDiagonal = false;
+                        break;// Move to the next column after finding a winDiagonal
 
                     }
                 }
-                int moneyWonLeftToRight = wagerValidated / 2;
-                if (winLeftToRight)
+                if (winDiagonal)
                 {
-                    Console.WriteLine("You have a diagonal win from left to right.");
-                    walletUpdated = walletValidated += moneyWonLeftToRight;
+                    numOfWinsDiagonal++;
                 }
                 
-                else
+                if (numOfWinsDiagonal == 2)
                 {
-                    Console.WriteLine("There is no win from left to right.");
-                    walletUpdated = walletValidated -= moneyWonLeftToRight;
+                    Console.WriteLine("You have two diagonal wins. You won: " + wagerValidated);
+                    walletValidated += wagerValidated;
                 }
-                Console.WriteLine("Your wallet has now " + walletUpdated + " Euro in it.");
+
+                if (numOfWinsDiagonal == 0)
+                {
+                    Console.WriteLine("There is only one or no diagonal win. You lost: " + wagerValidated);
+                    walletValidated -= wagerValidated;
+                }
+                Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
             }
 
         }
