@@ -24,20 +24,29 @@ namespace Slot_Machine
             //Then, TryParse to validate and convert that string to a number.
             //To handle cases where the user might enter non-numeric characters,
             string wallet = Console.ReadLine();
-            int walletValidated;
-            bool walletValidInput = int.TryParse(wallet, out walletValidated);
+            double walletValidated;
+            bool walletValidInput = double.TryParse(wallet, out walletValidated);
             while (walletValidated > 0)
             {
-                if (walletValidInput) { Console.WriteLine("How much would you like to wage? Please enter only a number and then ENTER"); }
+                if (walletValidInput ) { Console.WriteLine("How much would you like to wage? Please enter only a number and then ENTER"); }
                 else { Console.WriteLine("Invalid input. Please enter a valid number."); }
 
                 //Console.WriteLine("How much would you like to wage? Please enter only a number and then ENTER");
                 string wager = Console.ReadLine();
-                int wagerValidated;
-                bool wagerValidInput = int.TryParse(wager, out wagerValidated);
+                double wagerValidated;
+                bool wagerValidInput = double.TryParse(wager, out wagerValidated);
 
                 if (wagerValidInput) { Console.WriteLine("Your wager is " + wager + "Euro."); }
                 else { Console.WriteLine("Invalid input. Please enter a valid number."); }
+                while (wagerValidated > walletValidated)
+                { 
+                    Console.WriteLine("The wager you have chosen is too high.");
+                    Console.WriteLine("Enter a wager lower or equal to " + walletValidated + " Euro.");
+                    string newWager = Console.ReadLine();
+                    wagerValidInput = double.TryParse(newWager, out wagerValidated);
+                    if (wagerValidated <= walletValidated) 
+                    {break; }
+                }
 
                 Console.WriteLine("Please choose ONLY ONE of the following game mode options and ENTER " +
                     "and write only the coresponding symbol in capital letters: "
@@ -124,7 +133,7 @@ namespace Slot_Machine
                     if (numOfWins > 0)
                     {
                         Console.WriteLine("You won " + (wagerValidated / GRID_SIZE_ROW) * numOfWins + " Euro, because " + numOfWins + " lineIndex(s) is/are the same");
-                        int moneyWon = wagerValidated / GRID_SIZE_ROW * numOfWins;
+                        double moneyWon = wagerValidated / GRID_SIZE_ROW * numOfWins;
                         walletValidated += moneyWon;
                     }
                     if (numOfWins == 0)
@@ -157,7 +166,7 @@ namespace Slot_Machine
                     if (numOfWins > 0)
                     {
                         Console.WriteLine("You won " + (wagerValidated / GRID_SIZE_COLUMN) * numOfWins + " Euro, because " + numOfWins + " column(s) is/are the same.");
-                        int moneyWon = wagerValidated / GRID_SIZE_ROW * numOfWins;
+                        double moneyWon = wagerValidated / GRID_SIZE_ROW * numOfWins;
                         walletValidated += moneyWon;
                     }
                     if (numOfWins == 0)
