@@ -26,27 +26,47 @@ namespace Slot_Machine
             string wallet = Console.ReadLine();
             double walletValidated;
             bool walletValidInput = double.TryParse(wallet, out walletValidated);
+            walletValidInput = false;
             while (walletValidated > 0)
-            {
-                if (walletValidInput ) { Console.WriteLine("How much would you like to wage? Please enter only a number and then ENTER"); }
-                else { Console.WriteLine("Invalid input. Please enter a valid number."); }
-
-                //Console.WriteLine("How much would you like to wage? Please enter only a number and then ENTER");
+            {   
+                while (!walletValidInput)
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid number.");
+                    string walletProper = Console.ReadLine();
+                    walletValidInput = double.TryParse(walletProper, out walletValidated);
+                }
+                
                 string wager = Console.ReadLine();
                 double wagerValidated;
                 bool wagerValidInput = double.TryParse(wager, out wagerValidated);
 
-                if (wagerValidInput) { Console.WriteLine("Your wager is " + wager + "Euro."); }
-                else { Console.WriteLine("Invalid input. Please enter a valid number."); }
-                while (wagerValidated > walletValidated)
+                while (!wagerValidInput) 
                 { 
+                    Console.WriteLine("Invalid input. Please enter a valid number.");
+                    string wagerProper = Console.ReadLine();
+                    wagerValidInput = double.TryParse(wagerProper, out wagerValidated);
+                }
+                while (wagerValidated > walletValidated)
+                {
                     Console.WriteLine("The wager you have chosen is too high.");
                     Console.WriteLine("Enter a wager lower or equal to " + walletValidated + " Euro.");
                     string newWager = Console.ReadLine();
                     wagerValidInput = double.TryParse(newWager, out wagerValidated);
-                    if (wagerValidated <= walletValidated) 
-                    {break; }
+                    if (wagerValidated <= walletValidated)
+                        break;
                 }
+
+                Console.WriteLine("Your wager is " + wagerValidated + " Euro.");
+
+                //while (wagerValidated > walletValidated)
+                //{ 
+                   // Console.WriteLine("The wager you have chosen is too high.");
+                   // Console.WriteLine("Enter a wager lower or equal to " + walletValidated + " Euro.");
+                    //string newWager = Console.ReadLine();
+                    //wagerValidInput = double.TryParse(newWager, out wagerValidated);
+                    //if (wagerValidated <= walletValidated) 
+                    //{break; }
+                //}
 
                 Console.WriteLine("Please choose ONLY ONE of the following game mode options and ENTER " +
                     "and write only the coresponding symbol in capital letters: "
