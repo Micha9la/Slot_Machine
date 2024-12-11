@@ -45,8 +45,7 @@ namespace Slot_Machine
                     + GAME_MODE_HORIZONTAL_LINES + ", for all horizontal lines. "
                     + GAME_MODE_VERTICAL_LINES + ", for all vertical lines. "
                     + GAME_MODE_DIAGONAL_LINES + ", for both diagonal lines. ");
-                string gameMode = Console.ReadLine();
-                string gameModeInsensitive = gameMode.ToUpper();
+                string gameModeInsensitive = Console.ReadLine().ToUpper();                
 
                 while (gameModeInsensitive != GAME_MODE_CENTRAL_LINE && gameModeInsensitive != GAME_MODE_HORIZONTAL_LINES && gameModeInsensitive != GAME_MODE_VERTICAL_LINES && gameModeInsensitive != GAME_MODE_DIAGONAL_LINES)
                 {
@@ -56,8 +55,8 @@ namespace Slot_Machine
                     + GAME_MODE_HORIZONTAL_LINES + ", for all horizontal lines. "
                     + GAME_MODE_VERTICAL_LINES + ", for all vertical lines. "
                     + GAME_MODE_DIAGONAL_LINES + ", for both diagonal lines. ");
-                    gameMode = Console.ReadLine();
-                    gameModeInsensitive = gameMode.ToUpper();
+                    gameModeInsensitive = Console.ReadLine();
+                    gameModeInsensitive = gameModeInsensitive.ToUpper();
 
                 }
                 int[,] grid = new int[GRID_SIZE_ROW, GRID_SIZE_COLUMN];
@@ -221,7 +220,12 @@ namespace Slot_Machine
                     }
                     Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
                 }
-
+                Console.WriteLine("Write X now, if you like to stop the game");
+                string endGame = Console.ReadLine().ToLower();
+                if (endGame == "x")
+                {
+                    break;
+                }
             }
         }
 
