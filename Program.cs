@@ -19,14 +19,11 @@ namespace Slot_Machine
 
             Random random = new Random();
             Console.WriteLine("Welcome to the slot machine.");
-            Console.WriteLine("How much money would you like to put into your gaming wallet? Please put in only numbers and press ENTER.");
-            //read the input as a string, because user input from the console is typically received as a string.
-            //Then, TryParse to validate and convert that string to a number.
-            //To handle cases where the user might enter non-numeric characters,
+            Console.WriteLine("How much money would you like to put into your gaming wallet? Please put in only numbers and press ENTER.");           
             string wallet = Console.ReadLine();
             double walletValidated;
             bool walletValidInput = double.TryParse(wallet, out walletValidated);
-            walletValidInput = false;
+            
             while (walletValidated > 0)
             {   
                 while (!walletValidInput)
@@ -58,25 +55,20 @@ namespace Slot_Machine
 
                 Console.WriteLine("Your wager is " + wagerValidated + " Euro.");
 
-                //while (wagerValidated > walletValidated)
-                //{ 
-                   // Console.WriteLine("The wager you have chosen is too high.");
-                   // Console.WriteLine("Enter a wager lower or equal to " + walletValidated + " Euro.");
-                    //string newWager = Console.ReadLine();
-                    //wagerValidInput = double.TryParse(newWager, out wagerValidated);
-                    //if (wagerValidated <= walletValidated) 
-                    //{break; }
-                //}
-
-                Console.WriteLine("Please choose ONLY ONE of the following game mode options and ENTER " +
-                    "and write only the coresponding symbol in capital letters: "
+                Console.WriteLine("Please choose ONLY ONE of the following game mode options and press ENTER: "
                     + GAME_MODE_CENTRAL_LINE + ", for central line. "
                     + GAME_MODE_HORIZONTAL_LINES + ", for all horizontal lines. "
                     + GAME_MODE_VERTICAL_LINES + ", for all vertical lines. "
                     + GAME_MODE_DIAGONAL_LINES + ", for both diagonal lines. ");
-                string gameModeInsensitive = Console.ReadLine().ToUpper();                
+                string gameModeInsensitive = Console.ReadLine().ToUpper();
 
-                while (gameModeInsensitive != GAME_MODE_CENTRAL_LINE && gameModeInsensitive != GAME_MODE_HORIZONTAL_LINES && gameModeInsensitive != GAME_MODE_VERTICAL_LINES && gameModeInsensitive != GAME_MODE_DIAGONAL_LINES)
+                List<string> gameModes = new List<string>();
+                gameModes.Add("A");
+                gameModes.Add("B");
+                gameModes.Add("C");
+                gameModes.Add("D");
+
+                while (!gameModes.Contains(gameModeInsensitive))
                 {
                     Console.WriteLine("Please choose ONLY ONE of the following game mode options and ENTER " +
                     "and write only the coresponding symbol in capital letters: "
