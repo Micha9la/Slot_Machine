@@ -76,8 +76,7 @@ namespace Slot_Machine
                     + GAME_MODE_HORIZONTAL_LINES + ", for all horizontal lines. "
                     + GAME_MODE_VERTICAL_LINES + ", for all vertical lines. "
                     + GAME_MODE_DIAGONAL_LINES + ", for both diagonal lines. ");
-                    gameModeInsensitive = Console.ReadLine();
-                    gameModeInsensitive = gameModeInsensitive.ToUpper();
+                    gameModeInsensitive = Console.ReadLine().ToUpper();                    
 
                 }
                 int[,] grid = new int[GRID_SIZE_ROW, GRID_SIZE_COLUMN];
