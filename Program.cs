@@ -63,10 +63,10 @@ namespace Slot_Machine
                 string gameModeInsensitive = Console.ReadLine().ToUpper();
 
                 List<string> gameModes = new List<string>();
-                gameModes.Add("A");
-                gameModes.Add("B");
-                gameModes.Add("C");
-                gameModes.Add("D");
+                gameModes.Add(GAME_MODE_CENTRAL_LINE);
+                gameModes.Add(GAME_MODE_HORIZONTAL_LINES);
+                gameModes.Add(GAME_MODE_HORIZONTAL_LINES);
+                gameModes.Add(GAME_MODE_HORIZONTAL_LINES);
 
                 while (!gameModes.Contains(gameModeInsensitive))
                 {
