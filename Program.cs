@@ -6,249 +6,124 @@ namespace Slot_Machine
     internal class Program
     {
         static void Main(string[] args)
-        {
-            const int UPPER_NUMBER_RANGE = 4;
-            const int LOWER_NUMBER_RANGE = 1;
-            const int GRID_SIZE_ROW = 3;
-            const int GRID_SIZE_COLUMN = 3;
-            const string GAME_MODE_CENTRAL_LINE = "A";
-            const string GAME_MODE_HORIZONTAL_LINES = "B";
-            const string GAME_MODE_VERTICAL_LINES = "C";
-            const string GAME_MODE_DIAGONAL_LINES = "D";
-            const int GRID_DIVISOR = 2;
+        {            
+            UIMethods.WelcomeMessage();           
+            double walletValidated = UIMethods.GetValidWalletAmount();//returned value (wallet amount) can be stored in walletValidated and used later in the program
 
-            Random random = new Random();
-            Console.WriteLine("Welcome to the slot machine.");
-            Console.WriteLine("How much money would you like to put into your gaming wallet? Please put in only numbers and press ENTER.");           
-            string wallet = Console.ReadLine();
-            double walletValidated;
-            bool walletValidInput = double.TryParse(wallet, out walletValidated);
-            
-            while (walletValidated > 0)
-            {   
-                while (!walletValidInput)
+            // Start game loop
+            while (true)  // Infinite loop, exits when the user inputs 'X'
+            {
+                //get wager amount
+                double wagerValidated = UIMethods.GetValidWagerAmount(walletValidated);
+                Console.WriteLine($"Your wager is {wagerValidated} Euro.");
+
+                // Game Mode Selection
+                string gameMode = UIMethods.GetValidGameMode();
+
+                // Generate Grid
+                UIMethods.DisplayGeneratedGrid();
+
+                //In a 2D array, the first dimension (0) represents rows, and the second dimension (1) represents columns
+                int rowLength = grid.GetLength(0);//stores the number of rows in the grid
+                int columnLength = grid.GetLength(1);//stores the number of columns.
+
+                bool win = false;
+                // Central Line Check
+                if (gameMode == Constants.GAME_MODE_CENTRAL_LINE)
                 {
-                    Console.WriteLine("Invalid input. Please enter a valid number.");
-                    string walletProper = Console.ReadLine();
-                    walletValidInput = double.TryParse(walletProper, out walletValidated);
-                }
-                
-                string wager = Console.ReadLine();
-                double wagerValidated;
-                bool wagerValidInput = double.TryParse(wager, out wagerValidated);
-
-                while (!wagerValidInput) 
-                { 
-                    Console.WriteLine("Invalid input. Please enter a valid number.");
-                    string wagerProper = Console.ReadLine();
-                    wagerValidInput = double.TryParse(wagerProper, out wagerValidated);
-                }
-                while (wagerValidated > walletValidated)
-                {
-                    Console.WriteLine("The wager you have chosen is too high.");
-                    Console.WriteLine("Enter a wager lower or equal to " + walletValidated + " Euro.");
-                    string newWager = Console.ReadLine();
-                    wagerValidInput = double.TryParse(newWager, out wagerValidated);
-                    if (wagerValidated <= walletValidated)
-                        break;
-                }
-
-                Console.WriteLine("Your wager is " + wagerValidated + " Euro.");
-
-                Console.WriteLine("Please choose ONLY ONE of the following game mode options and press ENTER: "
-                    + GAME_MODE_CENTRAL_LINE + ", for central line. "
-                    + GAME_MODE_HORIZONTAL_LINES + ", for all horizontal lines. "
-                    + GAME_MODE_VERTICAL_LINES + ", for all vertical lines. "
-                    + GAME_MODE_DIAGONAL_LINES + ", for both diagonal lines. ");
-                string gameModeInsensitive = Console.ReadLine().ToUpper();
-
-                List<string> gameModes = new List<string>();
-                gameModes.Add(GAME_MODE_CENTRAL_LINE);
-                gameModes.Add(GAME_MODE_HORIZONTAL_LINES);
-                gameModes.Add(GAME_MODE_HORIZONTAL_LINES);
-                gameModes.Add(GAME_MODE_HORIZONTAL_LINES);
-
-                while (!gameModes.Contains(gameModeInsensitive))
-                {
-                    Console.WriteLine("Please choose ONLY ONE of the following game mode options and ENTER " +
-                    "and write only the coresponding symbol in capital letters: "
-                    + GAME_MODE_CENTRAL_LINE + ", for central line. "
-                    + GAME_MODE_HORIZONTAL_LINES + ", for all horizontal lines. "
-                    + GAME_MODE_VERTICAL_LINES + ", for all vertical lines. "
-                    + GAME_MODE_DIAGONAL_LINES + ", for both diagonal lines. ");
-                    gameModeInsensitive = Console.ReadLine().ToUpper();                    
-
-                }
-                int[,] grid = new int[GRID_SIZE_ROW, GRID_SIZE_COLUMN];
-
-                for (int lineIndex = 0; lineIndex < GRID_SIZE_ROW; lineIndex++)
-                {
-                    for (int columnIndex = 0; columnIndex < GRID_SIZE_COLUMN; columnIndex++)
-                    {
-                        int randomNumber = random.Next(LOWER_NUMBER_RANGE, UPPER_NUMBER_RANGE);
-                        grid[lineIndex, columnIndex] = randomNumber;
-                        Console.Write(grid[lineIndex, columnIndex] + " ");
-                    }
-                    Console.WriteLine();
-                }
-                Console.WriteLine("Above you see the grid");
-
-                int rowLength = grid.GetLength(0);
-                int columnLength = grid.GetLength(1);
-
-                int middleRowIndex = rowLength / GRID_DIVISOR;
-                int firstElementMiddleRow = grid[middleRowIndex, 0];
-                if (gameModeInsensitive == GAME_MODE_CENTRAL_LINE)
-                {
-                    bool win = true;
+                    int middleRowIndex = rowLength / Constants.GRID_DIVISOR;
+                    int firstElementMiddleRow = grid[middleRowIndex, 0];                    
+                    win = true;
                     for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
                     {
                         if (grid[middleRowIndex, columnIndex] != firstElementMiddleRow)
                         {
-                            win = false;
-                            Console.WriteLine("You lost " + wager + " Euro");
-                            walletValidated -= wagerValidated;
-                            Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
+                            win = false;                           
                             break;
                         }
                     }
-                    if (win)
-                    {
-                        Console.WriteLine("You won " + wager + " Euro");
-                        walletValidated += wagerValidated;
-                        Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
-                    }
                 }
-
-
-                int numOfWins = 0;
-                if (gameModeInsensitive == GAME_MODE_HORIZONTAL_LINES)
+                // ---Horizontal Lines Check ---
+                if (gameMode == Constants.GAME_MODE_HORIZONTAL_LINES)
                 {
-                    for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
+                    win = true;
+                    for (int rowIndex = 0; rowIndex < rowLength; rowIndex++)
                     {
-                        bool win = true;
-                        int firstElementOfEachRow = grid[lineIndex, 0];
-                        for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
+                        int firstElement = grid[rowIndex, 0];
+                        for (int columnIndex = 1; columnIndex < columnLength; columnIndex++)
                         {
-                            if (grid[lineIndex, columnIndex] != firstElementOfEachRow)
+                            if (grid[rowIndex, columnIndex] != firstElement)
                             {
                                 win = false;
-                                break;// Move to the next lineIndex after finding a winDiagonal
+                                break;
                             }
                         }
-                        if (win)
-                        {
-                            numOfWins++;
-                        }
+                        if (!win) break;
                     }
-                    if (numOfWins > 0)
-                    {
-                        Console.WriteLine("You won " + (wagerValidated / GRID_SIZE_ROW) * numOfWins + " Euro, because " + numOfWins + " lineIndex(s) is/are the same");
-                        double moneyWon = wagerValidated / GRID_SIZE_ROW * numOfWins;
-                        walletValidated += moneyWon;
-                    }
-                    if (numOfWins == 0)
-                    {
-                        Console.WriteLine("You lost. No row is the same");
-                        walletValidated -= wagerValidated;
-                    }
-                    Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
                 }
 
-                if (gameModeInsensitive == GAME_MODE_VERTICAL_LINES)
+                // --- Vertical Lines Check ---
+                if (gameMode == Constants.GAME_MODE_VERTICAL_LINES)
                 {
+                    win = true;
                     for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
                     {
-                        bool win = true;
-                        int firstElementOfEachColumn = grid[0, columnIndex];
-                        for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
+                        int firstElement = grid[0, columnIndex];
+                        for (int rowIndex = 1; rowIndex < rowLength; rowIndex++)
                         {
-                            if (grid[lineIndex, columnIndex] != firstElementOfEachColumn)
+                            if (grid[rowIndex, columnIndex] != firstElement)
                             {
                                 win = false;
-                                break;// Move to the next column after finding a winDiagonal
+                                break;
                             }
                         }
-                        if (win)
-                        {
-                            numOfWins++;
-                        }
+                        if (!win) break;
                     }
-                    if (numOfWins > 0)
-                    {
-                        Console.WriteLine("You won " + (wagerValidated / GRID_SIZE_COLUMN) * numOfWins + " Euro, because " + numOfWins + " column(s) is/are the same.");
-                        double moneyWon = wagerValidated / GRID_SIZE_ROW * numOfWins;
-                        walletValidated += moneyWon;
-                    }
-                    if (numOfWins == 0)
-                    {
-                        Console.WriteLine("You lost. No column is the same");
-                        walletValidated -= wagerValidated;
-                    }
-                    Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
                 }
 
-                int numOfWinsDiagonal = 0;
-                int firstElementLeftToRight = grid[0, 0];
-                int firstElementRightToLeft = grid[0, GRID_SIZE_COLUMN - 1];
-                if (gameModeInsensitive == GAME_MODE_DIAGONAL_LINES)
+                // --- Diagonal Lines Check ---
+                if (gameMode == Constants.GAME_MODE_DIAGONAL_LINES)
                 {
-                    bool winDiagonal = true;
-                    for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
-                    {
-                        if (grid[lineIndex, GRID_SIZE_COLUMN - 1 - lineIndex] != firstElementRightToLeft)
-                        {
-                            winDiagonal = false;
-                            break;// Move to the next column after finding a winDiagonal
-                        }
-                    }
-                    if (winDiagonal)
-                    {
-                        numOfWinsDiagonal++;
-                    }
+                    bool mainDiagonal = (grid[0, 0] == grid[1, 1] && grid[1, 1] == grid[2, 2]);
+                    bool antiDiagonal = (grid[0, 2] == grid[1, 1] && grid[1, 1] == grid[2, 0]);
 
-                    for (int lineIndex = 0; lineIndex < rowLength; lineIndex++)
-                    {
-                        if (grid[lineIndex, lineIndex] != firstElementLeftToRight)
-                        {
-                            winDiagonal = false;
-                            break;
-                        }
-
-                        if (grid[lineIndex, lineIndex] != firstElementLeftToRight)
-                        {
-                            winDiagonal = false;
-                            break;// Move to the next column after finding a winDiagonal
-
-                        }
-                    }
-                    if (winDiagonal)
-                    {
-                        numOfWinsDiagonal++;
-                    }
-
-                    if (numOfWinsDiagonal == 2)
-                    {
-                        Console.WriteLine("You have two diagonal wins. You won: " + wagerValidated);
-                        walletValidated += wagerValidated;
-                    }
-
-                    if (numOfWinsDiagonal == 0)
-                    {
-                        Console.WriteLine("There is only one or no diagonal win. You lost: " + wagerValidated);
-                        walletValidated -= wagerValidated;
-                    }
-                    Console.WriteLine("Your wallet has now " + walletValidated + " Euro in it.");
+                    win = mainDiagonal && antiDiagonal;
                 }
-                Console.WriteLine("Write X now, if you like to stop the game");
+
+                // --- Wallet Update ---
+                if (win)
+                {
+                    Console.WriteLine($"You won {wagerValidated} Euro!");
+                    walletValidated += wagerValidated;
+                }
+                else
+                {
+                    Console.WriteLine($"You lost {wagerValidated} Euro.");
+                    walletValidated -= wagerValidated;
+                }
+
+                Console.WriteLine($"Your wallet now has {walletValidated} Euro.");
+
+                if (walletValidated <= 0)
+                {
+                    Console.WriteLine("You have no money left. Game over!");
+                    break;
+                }
+                // End Game Check
+                Console.WriteLine("Write 'X' now if you want to stop the game, or press ENTER to continue.");
                 string endGame = Console.ReadLine().ToLower();
                 if (endGame == "x")
                 {
+                    Console.WriteLine("Thank you for playing!");
                     break;
                 }
             }
+
+
         }
 
     }
+
 }
+
 
