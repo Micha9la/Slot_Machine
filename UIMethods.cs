@@ -67,7 +67,7 @@ namespace Slot_Machine
                     + Constants.GAME_MODE_VERTICAL_LINES + " (vertical lines), "
                     + Constants.GAME_MODE_DIAGONAL_LINES + " (diagonal lines).");
 
-            string gameModeInsensitive = Console.ReadLine().ToUpper();            
+            string gameModeInsensitive = Console.ReadLine().ToUpper();
 
             while (!gameModes.Contains(gameModeInsensitive))//while loop will continue as long as gameModeInsensitive is not in the list
             {
@@ -82,7 +82,7 @@ namespace Slot_Machine
             return gameModeInsensitive;
         }
 
-        public static void DisplayGeneratedGrid()
+        public static int[,] DisplayGeneratedGrid()
         {
             Random random = new Random();
             int[,] grid = new int[Constants.GRID_SIZE_ROW, Constants.GRID_SIZE_COLUMN];
@@ -97,11 +97,96 @@ namespace Slot_Machine
                 Console.WriteLine();
             }
             Console.WriteLine("Above you see the grid.");
+            return grid;// return grid so i can use it elsewhere
         }
-        public static string GiveUserFeedback(string messageToUser)
+
+        public static bool CheckCentralLineWin(int[,] grid)
         {
-            Console.WriteLine(messageToUser);
-            return Console.ReadLine();
+            int rowLength = grid.GetLength(0);//stores the number of rows in the grid
+            int columnLength = grid.GetLength(1);//stores the number of columns.
+            int middleRowIndex = rowLength / Constants.GRID_DIVISOR;
+            int firstElementMiddleRow = grid[middleRowIndex, 0];
+
+            for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
+            {
+                if (grid[middleRowIndex, columnIndex] != firstElementMiddleRow)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public static bool CheckHorizontalLinesWin(int[,] grid)
+        {
+            int rowLength = grid.GetLength(0);//stores the number of rows in the grid
+            int columnLength = grid.GetLength(1);//stores the number of columns.
+
+            for (int rowIndex = 0; rowIndex < rowLength; rowIndex++)
+            {
+                int firstElement = grid[rowIndex, 0];
+                for (int columnIndex = 1; columnIndex < columnLength; columnIndex++)
+                {
+                    if (grid[rowIndex, columnIndex] != firstElement)
+                    {
+                        return false;
+                    }
+                }               
+            }
+            return true;
+        }
+        public static bool CheckVerticalLinesWin(int[,] grid)
+        {
+            int rowLength = grid.GetLength(0);//stores the number of rows in the grid
+            int columnLength = grid.GetLength(1);//stores the number of columns.
+
+            for (int columnIndex = 0; columnIndex < columnLength; columnIndex++)
+            {
+                int firstElement = grid[0, columnIndex];
+                for (int rowIndex = 1; rowIndex < rowLength; rowIndex++)
+                {
+                    if (grid[rowIndex, columnIndex] != firstElement)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public static bool CheckDiagonalLinesWin(int[,] grid)
+        {
+            return (grid[0, 0] == grid[1, 1] && grid[1, 1] == grid[2, 2]) ||
+                    (grid[0, 2] == grid[1, 1] && grid[1, 1] == grid[2, 0]);
+        }
+
+        public static double UpdateWallet(double walletValidated, double wagerValidated, int[,] grid)
+        {
+            if (CheckCentralLineWin(grid) || CheckHorizontalLinesWin(grid) || CheckVerticalLinesWin(grid) || CheckDiagonalLinesWin(grid))
+            {
+                Console.WriteLine($"You won {wagerValidated} Euro!");
+                walletValidated += wagerValidated;
+            }
+            else
+            {
+                Console.WriteLine($"You lost {wagerValidated} Euro.");
+                walletValidated -= wagerValidated;
+            }
+
+            Console.WriteLine($"Your wallet now has {walletValidated} Euro.");
+
+            if (walletValidated <= 0)
+            {
+                Console.WriteLine("You have no money left. Game over!");
+            }
+            return walletValidated;
+        }
+
+        public static bool CheckEndGame() 
+        {
+            Console.WriteLine("Write 'X' now if you want to stop the game, or press ENTER to continue.");
+            string endGame = Console.ReadLine().ToLower();
+            return endGame == "x";
         }
     }
 }
+
