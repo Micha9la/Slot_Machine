@@ -27,24 +27,24 @@ namespace Slot_Machine
                 // Central Line Check
                 if (gameMode == Constants.GAME_MODE_CENTRAL_LINE)
                 {
-                    win = UIMethods.CheckCentralLineWin(grid);
+                    win = LogicMethods.CheckCentralLineWin(grid);
                 }
                 // ---Horizontal Lines Check ---
                 if (gameMode == Constants.GAME_MODE_HORIZONTAL_LINES)
                 {
-                    win = UIMethods.CheckHorizontalLinesWin(grid);
+                    win = LogicMethods.CheckHorizontalLinesWin(grid);
                 }
 
                 // --- Vertical Lines Check ---
                 if (gameMode == Constants.GAME_MODE_VERTICAL_LINES)
                 {
-                    win = UIMethods.CheckVerticalLinesWin(grid);
+                    win = LogicMethods.CheckVerticalLinesWin(grid);
                 }
 
                 // --- Diagonal Lines Check ---
                 if (gameMode == Constants.GAME_MODE_DIAGONAL_LINES)
                 {
-                    win = UIMethods.CheckDiagonalLinesWin(grid);
+                    win = LogicMethods.CheckDiagonalLinesWin(grid);
                 }
 
                 // --- Wallet Update ---
