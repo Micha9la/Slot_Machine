@@ -48,7 +48,8 @@ namespace Slot_Machine
                 }
 
                 // --- Wallet Update ---
-                walletValidated = UIMethods.UpdateWallet(walletValidated, wagerValidated, grid);
+                walletValidated = LogicMethods.UpdateWalletBalance(walletValidated, wagerValidated, win);
+                UIMethods.DisplayWalletUpdate(walletValidated);
 
               
                 // End Game Check

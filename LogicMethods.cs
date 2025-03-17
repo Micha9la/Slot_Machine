@@ -63,8 +63,46 @@ namespace Slot_Machine
 
         public static bool CheckDiagonalLinesWin(int[,] grid)
         {
-            return (grid[0, 0] == grid[1, 1] && grid[1, 1] == grid[2, 2]) ||
-                    (grid[0, 2] == grid[1, 1] && grid[1, 1] == grid[2, 0]);
+            int size = grid.GetLength(0); // Get grid size (assume square grid) number of rows
+
+            //Check Main Diagonal (\)
+            int firstMainDiagonal = grid[0, 0];
+            bool mainDiagonalWin = true;
+            for (int i = 1; i < size; i++)
+            {
+                if (grid[i, i] != firstMainDiagonal)
+                {
+                    mainDiagonalWin = false;
+                    break;
+                }
+            }
+
+            //Check Anti-Diagonal (/)
+            int firstAntiDiagonal = grid[0, size - 1];
+            bool antiDiagonalWin = true;
+            for (int i = 1; i < size; i++)
+            {
+                if (grid[i, size - 1 - i] != firstAntiDiagonal)
+                {
+                    antiDiagonalWin = false;
+                    break;
+                }
+            }
+
+            return mainDiagonalWin || antiDiagonalWin;
+        }
+
+        public static double UpdateWalletBalance(double walletValidated, double wagerValidated, bool win)
+        {
+            if (win)
+            {
+                walletValidated += wagerValidated;
+            }
+            else
+            {
+                walletValidated -= wagerValidated;
+            }
+            return walletValidated;
         }
     }
 }

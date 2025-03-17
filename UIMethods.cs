@@ -8,6 +8,8 @@ namespace Slot_Machine
 {
     public class UIMethods
     {
+        //provides a reusable random number generator.
+        public static readonly Random random = new Random();
         public static void WelcomeMessage()
         {
             Console.WriteLine("Welcome to the slot machine.");
@@ -83,8 +85,7 @@ namespace Slot_Machine
         }
 
         public static int[,] DisplayGeneratedGrid()
-        {
-            Random random = new Random();
+        {           
             int[,] grid = new int[Constants.GRID_SIZE_ROW, Constants.GRID_SIZE_COLUMN];
 
             for (int lineIndex = 0; lineIndex < Constants.GRID_SIZE_ROW; lineIndex++)
@@ -98,31 +99,17 @@ namespace Slot_Machine
             }
             Console.WriteLine("Above you see the grid.");
             return grid;// return grid so i can use it elsewhere
-        }
-
-        public static double UpdateWallet(double walletValidated, double wagerValidated, int[,] grid)
+        }       
+        public static void DisplayWalletUpdate(double walletValidated)
         {
-            if (LogicMethods.CheckCentralLineWin(grid) || LogicMethods.CheckHorizontalLinesWin(grid) || LogicMethods.CheckVerticalLinesWin(grid) || LogicMethods.CheckDiagonalLinesWin(grid))
-            {
-                Console.WriteLine($"You won {wagerValidated} Euro!");
-                walletValidated += wagerValidated;
-            }
-            else
-            {
-                Console.WriteLine($"You lost {wagerValidated} Euro.");
-                walletValidated -= wagerValidated;
-            }
-
             Console.WriteLine($"Your wallet now has {walletValidated} Euro.");
 
             if (walletValidated <= 0)
             {
                 Console.WriteLine("You have no money left. Game over!");
             }
-            return walletValidated;
-        }
-
-        public static bool CheckEndGame() 
+        }       
+        public static bool CheckEndGame()
         {
             Console.WriteLine("Write 'X' now if you want to stop the game, or press ENTER to continue.");
             string endGame = Console.ReadLine().ToLower();
